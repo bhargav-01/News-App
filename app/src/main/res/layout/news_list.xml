@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingEnd="16dp"
+    android:paddingLeft="16dp"
+    android:divider="@color/colorPrimaryDark"
+    android:paddingRight="16dp"
+    android:paddingStart="16dp"
+  >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amaranth"
+        android:textColor="#0E0E0D"
+        android:textSize="20sp"
+        tools:text="bhargav" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/section"
+        tools:text="bhargav"
+        android:textSize="16sp"
+        android:layout_marginTop="7dp"
+        android:textColor="#0E0E0D"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/type"
+            tools:text="bhargav"
+            android:textSize="15sp"
+            android:textColor="#393938"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/date"
+            tools:text="bhargav"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:textSize="15sp"
+            android:textColor="#3A3A3A"/>
+    </LinearLayout>
+
+</LinearLayout>
