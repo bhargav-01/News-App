@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/amaranth</item>
-        <item>@font/asul</item>
+        <item>@font/libre_baskerville_bold</item>
+        <item>@font/lobster</item>
+        <item>@font/montserrat_bold</item>
+        <item>@font/playfair_display_black</item>
+        <item>@font/playfair_display_sc_bold</item>
     </array>
 </resources>

@@ -2,6 +2,7 @@ package com.example.newsapp;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +23,8 @@ public class QueryUtils {
 
 
     private static final String LOG_TAG ="nbbb" ;
-
+    private static final String ACCEPT_PROPERTY = "application/geo+json;version=1";
+    private static final String USER_AGENT_PROPERTY = "newsapi.org (patelbhargav9@gmail.com)";
     public static ArrayList<News> fetchNewsData(String mUrl) {
         URL url=create(mUrl);
         String  jsonResponse="";
@@ -46,17 +48,22 @@ public class QueryUtils {
 
         try{
             JSONObject jsonObject=new JSONObject(jsonResponse);
-            JSONObject responce=jsonObject.getJSONObject("response");
-            JSONArray result=responce.getJSONArray("results");
-
+            JSONArray result=jsonObject.getJSONArray("articles");
+            Log.e(LOG_TAG,Integer.toString(result.length()));
+            Log.d(LOG_TAG,Integer.toString(result.length()));
+//            System.out.println("bhargav"+ result.length());
             for(int i=0;i<result.length();i++)
             {
                 JSONObject item=result.getJSONObject(i);
-                news.add(new News(item.getString("webTitle"),item.getString("type"),item.getString("sectionName"),item.getString("webUrl"),item.getString("webPublicationDate")));
+                if(item.getString("author").isEmpty() && !item.getString("urlToImage").isEmpty())
+                    news.add(new News(item.getString("title"),"Sports",item.getString("description"),item.getString("url"),item.getString("publishedAt"),item.getJSONObject("source").getString("name"),item.getString("urlToImage"),item.getJSONObject("source").getString("name")));
+                if(!item.getString("urlToImage").isEmpty())
+                    news.add(new News(item.getString("title"),"Sports",item.getString("description"),item.getString("url"),item.getString("publishedAt"),item.getString("author"),item.getString("urlToImage"),item.getJSONObject("source").getString("name")));
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
         return  news;
     }
@@ -71,19 +78,29 @@ public class QueryUtils {
         }
         try{
             httpsURLConnection=(HttpsURLConnection)url.openConnection();
-            httpsURLConnection.setConnectTimeout(15000);
-            httpsURLConnection.setReadTimeout(10000);
+            httpsURLConnection.setConnectTimeout(30000);
+            httpsURLConnection.setReadTimeout(60000);
+            httpsURLConnection.setRequestProperty("Accept", ACCEPT_PROPERTY);  // added
+            httpsURLConnection.setRequestProperty("User-Agent", USER_AGENT_PROPERTY); // added
             httpsURLConnection.setRequestMethod("GET");
             httpsURLConnection.connect();
+            Log.e(LOG_TAG,url.toString()+httpsURLConnection.getResponseCode());
             if(httpsURLConnection.getResponseCode()==200)
             {
                 inputStream=httpsURLConnection.getInputStream();
                 jsonResponce=ReadInputStream(inputStream);
             }
+            else
+            {
+//                inputStream=
+                Log.e(LOG_TAG,url.toString()+"bhagav");
+                ReadInputStream(httpsURLConnection.getErrorStream());
+            }
 
 
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
         finally {
             if(httpsURLConnection!=null)
@@ -93,6 +110,10 @@ public class QueryUtils {
             if(inputStream!=null)
             {
                 inputStream.close();
+            }
+            else
+            {
+                Log.e(LOG_TAG,url.toString()+"bhagav");
             }
         }
 
@@ -108,6 +129,7 @@ public class QueryUtils {
         InputStreamReader inputStreamReader=new InputStreamReader(inputStream, Charset.forName("UTF-8"));
         BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
         String line=bufferedReader.readLine();
+//        System.out.println("Error: "+bufferedReader.readLine());
         while (line!=null)
         {
             s.append(line);
